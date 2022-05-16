@@ -36,12 +36,12 @@ function createWindow() {
     // 生成窗口实例
     const Window = new electron_1.BrowserWindow({
         minWidth: 1000,
-        minHeight: 645,
+        minHeight: 650,
         width: 1000,
-        height: 645,
+        height: 650,
         frame: false,
         transparent: false,
-        hasShadow: false,
+        hasShadow: true,
         show: false,
         resizable: false,
         webPreferences: {

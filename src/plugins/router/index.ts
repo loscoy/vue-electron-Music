@@ -8,7 +8,22 @@ const routes = [
     children: [
       {
         path: "discover",
+        redirect: "/discover/discrecommend",
         component: () => import("@/views/defaultItem/discoverMusic.vue"),
+        children: [
+          {
+            path: "discRecommend",
+            component: () => import("@/views/defaultItem/discoverMusic/discRecommend.vue"),
+          },
+          {
+            path: "renklist",
+            component: () => import("@/views/defaultItem/discoverMusic/rankList.vue"),
+          },
+          {
+            path: "singers",
+            component: () => import("@/views/defaultItem/discoverMusic/singers.vue"),
+          },
+        ],
       },
       {
         path: "new",
@@ -17,6 +32,14 @@ const routes = [
       {
         path: "recommend",
         component: () => import("@/views/defaultItem/recommendPlaylist.vue"),
+      },
+      {
+        path: "fm",
+        component: () => import("@/views/defaultItem/personalFM.vue"),
+      },
+      {
+        path: "playlistdetail",
+        component: () => import("@/views/playlistDetail.vue"),
       },
     ],
   },

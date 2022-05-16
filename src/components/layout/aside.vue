@@ -1,16 +1,14 @@
-<script setup lang="ts"></script>
 <template>
   <div class="aside">
-    <el-scrollbar height="80vh">
-      <a-default></a-default>
-      <my-Music></my-Music>
-      <created-playlist></created-playlist>
-      <collect-playlist></collect-playlist
-    ></el-scrollbar>
+    <a-default></a-default>
+    <my-Music></my-Music>
+    <user-playlist></user-playlist>
   </div>
 </template>
+<script setup lang="ts"></script>
+
 <style scoped>
 .aside {
-  overflow-y: auto;
+  padding-top: 10px;
 }
 </style>

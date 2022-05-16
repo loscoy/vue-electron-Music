@@ -1,32 +1,73 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
+import { userService } from "@/API/user";
+import { ElMessage } from "element-plus";
 
-const queryStr = ref("");
+interface infoObject {
+  [key: string]: any;
+}
+
+const status = ref(false);
+let dialogShow = ref(false);
+let queryStr = ref<string | number>("");
 const router = useRouter();
+const userInfo: infoObject = reactive({
+  data: {},
+});
+
+onMounted(() => {
+  getLoginStatus();
+});
+
 const goBack = () => router.back();
 const goForward = () => router.go(1);
+const navBar = (val: string) => window.ipc.send("navBar", val);
 
-const navBar = (val: string) => {
-  window.ipc.send("navBar", val);
+const getInfo = () => {
+  userService.getCurrentUserInfo().then((res) => {
+    userInfo.data = res.data.profile;
+  });
 };
+const getLoginStatus = () => {
+  userService.loginStatus().then((res) => {
+    const temp = res.data.data.account;
+    if (temp !== null) {
+      status.value = true;
+      getInfo();
+    } else {
+      dialogShow.value = true;
+    }
+  });
+};
+const handleLogout = () => {
+  userService.logOut().then((res) => {
+    ElMessage("退出登录成功");
+    console.log(res);
+  });
+};
+const handleCommand = (command: string) => {
+  if (command === "logout") handleLogout();
+};
+
+const errorHandler = () => true;
 </script>
 
 <template>
   <div class="header">
     <div class="icon">
-      <content-menu>
-        <el-icon> <expand></expand> </el-icon
-      ></content-menu>
+      <content-menu class="menu">
+        <img src="@/assets/music_logo.png" />
+      </content-menu>
     </div>
     <div class="drag">
       <div class="drag-left">
         <div class="route">
           <div>
-            <el-icon :size="16" color="white" @click="goBack"><arrow-left /></el-icon>
+            <el-icon class="left-icon" :size="16" color="white" @click="goBack"><arrow-left /></el-icon>
           </div>
           <div>
-            <el-icon :size="16" color="white" @click="goForward"><arrow-right /></el-icon>
+            <el-icon class="right-icon" :size="16" color="white" @click="goForward"><arrow-right /></el-icon>
           </div>
         </div>
         <div class="search">
@@ -39,13 +80,32 @@ const navBar = (val: string) => {
       </div>
       <div class="drag-right">
         <div class="avatar">
-          <el-avatar :size="30">
-            <template #icon>
-              <el-icon><avatar /></el-icon>
+          <el-avatar>
+            <template #default>
+              <el-icon v-if="!userInfo.data.avatarUrl"><User /></el-icon>
+              <el-image v-else :src="userInfo.data.avatarUrl"></el-image>
             </template>
           </el-avatar>
-          <span>losocy</span>
+
+          <el-dropdown trigger="click" style="margin-right: 30px" v-if="userInfo.data.nickname" @command="handleCommand">
+            <span @click="getInfo">
+              {{ userInfo.data.nickname }}
+              <el-icon><CaretBottom /></el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>等级</el-dropdown-item>
+                <el-dropdown-item>个人信息设置</el-dropdown-item>
+                <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <span v-else @click="getLoginStatus">未登录</span>
+          <el-dialog v-model="dialogShow">
+            <login-page></login-page>
+          </el-dialog>
         </div>
+
         <div class="setting">
           <el-icon><tools /></el-icon>
         </div>
@@ -54,13 +114,13 @@ const navBar = (val: string) => {
     <el-divider direction="vertical" />
     <div class="buttons">
       <el-button plain @click="navBar('mini')"
-        ><el-icon><minus /></el-icon
+        ><el-icon :size="30"><minus /></el-icon
       ></el-button>
       <el-button plain @click="navBar('big')"
-        ><el-icon><full-screen /></el-icon
+        ><el-icon :size="30"><full-screen /></el-icon
       ></el-button>
       <el-button plain @click="navBar('close')"
-        ><el-icon><close /></el-icon
+        ><el-icon :size="30"><close /></el-icon
       ></el-button>
     </div>
   </div>
@@ -71,19 +131,20 @@ const navBar = (val: string) => {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 60px;
 }
 .icon {
-  padding-left: 10px;
+  padding: 20px;
+  height: 100%;
   text-align: left;
-  min-width: 15vw;
-  width: 15vw;
+  min-width: 210px;
+  max-width: 15vw;
+  /* -webkit-app-region: drag; */
 }
 .drag div {
   display: flex;
   align-items: center;
 }
-.drag-right div {
+.drag-right {
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -97,12 +158,38 @@ const navBar = (val: string) => {
 }
 .avatar span {
   margin-left: 5px;
+  font-size: 1rem;
+}
+.avatar span:hover {
+  color: rgb(194, 194, 194);
+  cursor: pointer;
+}
+.avatar .el-avatar {
+  height: 2rem;
+  width: 2rem;
+  line-height: 2rem;
+}
+
+.buttons .el-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .buttons {
   margin-right: 10px;
   -webkit-app-region: no-drag;
-  width: 90px;
+  width: 100px;
   display: flex;
+}
+.buttons .el-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.buttons .el-button .el-icon svg {
+  height: 1rem;
+  width: 1rem;
+  line-height: 1rem;
 }
 .route {
   width: 60px;
@@ -124,11 +211,11 @@ const navBar = (val: string) => {
   margin-left: 20px;
   width: 20vw;
 }
-::v-deep .el-input__inner {
+::v-deep(.el-input__inner) {
   height: 30px;
   border-radius: 20px;
 }
-::v-deep .el-input__prefix {
+::v-deep(.el-input__prefix) {
   display: flex;
   align-items: center;
 }
@@ -140,5 +227,15 @@ const navBar = (val: string) => {
 }
 .el-divider {
   height: 16px;
+}
+.setting i {
+  font-size: 1rem;
+}
+.left-icon,
+.search,
+.drag-right,
+.right-icon,
+.menu {
+  -webkit-app-region: no-drag;
 }
 </style>

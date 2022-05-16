@@ -1,41 +1,57 @@
 <script setup lang="ts"></script>
 <template>
   <div class="index">
-    <el-container>
-      <el-header>
+    <el-container class="index-container">
+      <el-header class="index-header">
         <Header></Header>
       </el-header>
 
-      <el-container>
-        <el-aside>
-          <Aside></Aside>
+      <el-container class="inner-container">
+        <el-aside class="index-aside">
+          <el-scrollbar>
+            <Aside></Aside>
+          </el-scrollbar>
         </el-aside>
-        <el-main>
-          <router-view></router-view>
+
+        <el-main class="index-main">
+          <el-scrollbar>
+            <router-view></router-view>
+          </el-scrollbar>
         </el-main>
       </el-container>
 
-      <el-footer>
+      <el-footer class="index-footer">
         <Footer></Footer>
       </el-footer>
     </el-container>
   </div>
 </template>
 <style scoped>
-.el-container {
-  min-height: 80vh;
+.index {
+  height: 100vh;
 }
-.el-header {
+.index-container {
+  height: 100%;
+}
+.index-header {
   padding: 0;
 }
-.el-footer {
-  bottom: 0;
-  left: 0;
+.index-footer {
   border-top: 1px solid #ccc;
+  height: 70px;
 }
-.el-aside {
+.index-aside {
   border-right: 1px solid #ccc;
-  min-width: 15vw;
-  width: 15vw;
+  min-width: 200px;
+  width: 200px;
+  height: 100%;
+  overflow: hidden;
+}
+.index-main {
+  padding-bottom: 0;
+}
+.inner-container {
+  overflow: hidden;
+  height: 81vh;
 }
 </style>

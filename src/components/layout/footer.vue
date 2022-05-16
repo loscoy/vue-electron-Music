@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { onMounted } from "@vue/runtime-core";
+import { onMounted } from "vue";
 import { musicService } from "../../API/music";
 
-onMounted(() => {
-  // getDayilymusic();
-});
+onMounted(() => {});
+
 const getDayilymusic = () => {
   const params = {};
-  musicService.getDaliyRecommend(params).then((res) => {
+  musicService.getDaliyRecommend(params).then((res: any) => {
     console.log("res", res);
   });
 };

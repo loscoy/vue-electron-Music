@@ -10,12 +10,12 @@ function createWindow() {
   // 生成窗口实例
   const Window = new BrowserWindow({
     minWidth: 1000,
-    minHeight: 645,
+    minHeight: 650,
     width: 1000, // * 指定启动app时的默认窗口尺寸
-    height: 645, // * 指定启动app时的默认窗口尺寸
+    height: 650, // * 指定启动app时的默认窗口尺寸
     frame: false, // * app边框(包括关闭,全屏,最小化按钮的导航栏) @false: 隐藏
     transparent: false, // * app 背景透明
-    hasShadow: false, // * app 边框阴影
+    hasShadow: true, // * app 边框阴影
     show: false, // 启动窗口时隐藏,直到渲染进程加载完成「ready-to-show 监听事件」 再显示窗口,防止加载时闪烁
     resizable: false, // 禁止手动修改窗口尺寸
     webPreferences: {

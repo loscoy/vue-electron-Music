@@ -1,12 +1,29 @@
 import axios from "axios";
+import { userService } from "@/API/user";
 import { showMessage } from "./status"; // 引入状态码文件
 import { ElMessage } from "element-plus"; // 引入el 提示框
+import { useUserStore } from "@/store/modules/user";
 
-// 设置接口超时时间
-axios.defaults.timeout = 60000;
+const refreshStatus = () => {
+  const user = useUserStore();
+  const setUserId = (id: string) => {
+    user.uid = id;
+  };
+  const loginStatus = async () => {
+    const status = await userService.loginStatus();
+    console.log(status.data.data);
+    if (status.data.data.account !== null) {
+      setUserId(status.data.data.account.id);
+    }
+  };
+  loginStatus();
+};
 
-// 请求地址
-axios.defaults.baseURL = "http://localhost:3000/";
+const request = axios.create({
+  baseURL: "http://localhost:3000/",
+  timeout: 30000,
+  withCredentials: true, // 允许跨域设置，不然可能因为拿不到cookie而报错
+});
 
 //http request 拦截器
 axios.interceptors.request.use(
@@ -32,6 +49,12 @@ axios.interceptors.response.use(
     const { response } = error;
     if (response) {
       // 请求已发出，但是不在2xx的范围
+      if (response.status === 301) {
+        refreshStatus();
+        const config = response.config;
+        config.baseURL = "";
+        return request(config);
+      }
       showMessage(response.status); // 传入响应码，匹配响应码对应信息
       return Promise.reject(response.data);
     } else {
@@ -39,31 +62,4 @@ axios.interceptors.response.use(
     }
   }
 );
-
-// 封装 GET POST 请求并导出
-export function request(url = "", params = {}, type = "POST") {
-  //设置 url params type 的默认值
-  return new Promise((resolve, reject) => {
-    let promise;
-    if (type.toUpperCase() === "GET") {
-      promise = axios({
-        url,
-        params,
-      });
-    } else if (type.toUpperCase() === "POST") {
-      promise = axios({
-        method: "POST",
-        url,
-        data: params,
-      });
-    }
-    //处理返回
-    promise
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-}
+export default request;

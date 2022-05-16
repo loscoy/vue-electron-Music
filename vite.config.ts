@@ -16,6 +16,16 @@ export default defineConfig({
       "@": path.join(__dirname, "./src"),
     },
   },
+  css: {
+    // css预处理器
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+        charset: false,
+        additionalData: '@import "./src/assets/style/global.less";',
+      },
+    },
+  },
   plugins: [
     vue(),
     AutoImport({
