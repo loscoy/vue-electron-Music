@@ -7,17 +7,23 @@
     <div class="playListContainer">
       <div class="playListCard">
         <div class="coverImg" v-show="show">
+          <div class="hoverPlay">
+            <el-image title="播放歌单内所有歌曲" class="icon" :src="hoverPlay" @click="playAll('dailyRec')" lazy></el-image>
+          </div>
           <div class="bgImg">
             <img src="@/assets/daily_back.png" />
           </div>
           <span class="img_text">{{ day }}</span>
-          <el-image class="img" :src="img" @load="load"> </el-image>
+          <el-image class="img" :src="daily_rece" @load="load"> </el-image>
         </div>
         <div class="abstract1">每日歌曲推荐</div>
       </div>
 
-      <div class="playListCard" v-for="item in recPlaylist.data.slice(0, 9)" :key="item">
+      <div class="playListCard" v-for="item in recPlaylist.data" :key="item">
         <div class="coverImg" v-if="item.picUrl">
+          <div class="hoverPlay">
+            <el-image title="播放歌单内所有歌曲" class="icon" :src="hoverPlay" @click="playAll(item.id)" lazy></el-image>
+          </div>
           <el-image class="else_img" :src="item.picUrl">
             <template #placeholder>
               <el-image :src="defaultImg"></el-image>
@@ -34,11 +40,14 @@
 import { musicService } from "@/API/music";
 import { onMounted, ref, reactive } from "vue";
 import defaultImg from "../../../assets/default_album.jpg";
-import img from "@/assets/daily_rece.png";
+import daily_rece from "@/assets/daily_rece.png";
+import hoverPlay from "@/assets/icon/hoverPlay.png";
+import { isString } from "@vue/shared";
+import { useMusicStore } from "@/store/modules/music";
 
 const show = ref(false);
-const nowDate = new Date();
-const day = nowDate.toString().split(" ")[2];
+const musicStore = useMusicStore();
+const day = new Date().toString().split(" ")[2];
 let recPlaylist: any = reactive({
   data: [],
 });
@@ -52,10 +61,33 @@ const getRecPlaylist = () => {
     recPlaylist.data = res.data.recommend;
   });
 };
+const playAll = (temp: string | number) => {
+  if (isString(temp)) {
+    musicService.getDaliyRecommend().then((res) => {
+      let dailyRecList = res.data.data.dailySongs;
+      setStore(dailyRecList);
+    });
+  } else {
+    musicService.getPlaylistSongs({ id: temp }).then((res) => {
+      let songList = res.data.songs;
+      setStore(songList);
+    });
+  }
+};
+const setStore = (songList: Array<any>) => {
+  musicStore.changePlayStatus(false);
+  musicStore.setCurrentIndex(0);
+  musicStore.setMusicIdArr(musicIdArr(songList));
+};
+const musicIdArr = (list: Array<any>) => {
+  return list.map((item: any) => {
+    return item.id;
+  });
+};
 const load = () => (show.value = true);
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .linkText {
   font-size: 1.5rem;
   text-align: left;
@@ -80,13 +112,14 @@ const load = () => (show.value = true);
   /* opacity: 0; */
 }
 .coverImg .bgImg img {
-  width: 100%;
+  width: 99%;
   border-radius: 5px;
 }
 .coverImg .else_img {
   width: 100%;
 }
 .coverImg .img {
+  width: 100%;
   border-radius: 5px;
   top: 0;
   left: 0;
@@ -120,5 +153,25 @@ const load = () => (show.value = true);
   width: 90%;
   font-size: 0.8rem;
   margin-top: 6px;
+}
+.playListCard .hoverPlay {
+  transition-duration: 500ms;
+  opacity: 0;
+
+  z-index: 3;
+  position: absolute;
+  width: 100%;
+  height: 97%;
+  border-radius: 5px;
+  backdrop-filter: blur(5px);
+  .icon {
+    top: 70%;
+    left: 30%;
+    color: rgb(197, 125, 124);
+  }
+  &:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
 }
 </style>

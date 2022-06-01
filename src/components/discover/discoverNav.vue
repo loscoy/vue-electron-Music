@@ -1,18 +1,16 @@
 <template>
   <div class="discoveNav">
-    <el-affix :offset="80">
-      <div class="navList">
-        <router-link to="discrecommend" exact>
-          <div>个性推荐</div>
-        </router-link>
-        <router-link to="renklist" exact>
-          <div>排行榜</div>
-        </router-link>
-        <router-link to="singers" exact>
-          <div>歌手</div>
-        </router-link>
-      </div>
-    </el-affix>
+    <div class="navList">
+      <router-link to="discrecommend" exact>
+        <div>个性推荐</div>
+      </router-link>
+      <router-link to="renklist" exact>
+        <div>排行榜</div>
+      </router-link>
+      <router-link to="singers" exact>
+        <div>歌手</div>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -21,8 +19,13 @@
 <style scoped>
 .discoveNav {
   background-color: white;
+  width: 100%;
+  top: 0;
+  position: sticky;
+  z-index: 11;
 }
 .navList {
+  width: 100%;
   display: flex;
   align-items: center;
   padding: 0;

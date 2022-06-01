@@ -15,7 +15,7 @@
       </el-form-item>
     </el-form>
     <div class="button">
-      <el-button color="red" auto-insert-space>注册</el-button>
+      <el-button color="red" auto-insert-space style="width: 100%; margin-top: 20px">注册</el-button>
     </div>
   </div>
 </template>

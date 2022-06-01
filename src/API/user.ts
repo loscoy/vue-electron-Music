@@ -7,9 +7,9 @@ export class userService {
   static getCurrentUserInfo = () => request.get("/user/account");
   // 获取朋友动态
   static getfriendDynamics = (params: any) => request.get("/event", { params });
-  // 手机号登录
+  // 手机号登录 phone password
   static postLogin = (params: any) => request.get("/login/cellphone", { params });
-  // 手机号注册
+  // 手机号注册 phone password nickname captcha
   static postregister = (params: any) => request.get("/register/cellphone", { params });
   // 退出登录
   static logOut = () => request.get("/logout");

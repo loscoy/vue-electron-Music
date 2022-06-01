@@ -5,7 +5,6 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import store from "./store";
-// import "element-plus/dist/index.css";
 
 const app = createApp(App);
 

@@ -56,5 +56,14 @@ export default defineConfig({
     strictPort: true, // * 固定端口(如果端口被占用则中止)
     host: true, // 0.0.0.0
     port: 3920, // 指定启动端口
+    cors: true,
+    // open: true,
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000/",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
   },
 });

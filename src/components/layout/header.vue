@@ -3,18 +3,22 @@ import { useRouter } from "vue-router";
 import { onMounted, reactive, ref } from "vue";
 import { userService } from "@/API/user";
 import { ElMessage } from "element-plus";
+import { useUserStore } from "@/store/modules/user";
+import { storeToRefs } from "pinia";
+import "element-plus/dist/index.css";
+import { useMusicStore } from "@/store/modules/music";
 
 interface infoObject {
   [key: string]: any;
 }
 
-const status = ref(false);
+const musicStore = useMusicStore();
+const userStore = useUserStore();
+const { status } = storeToRefs(userStore);
 let dialogShow = ref(false);
 let queryStr = ref<string | number>("");
 const router = useRouter();
-const userInfo: infoObject = reactive({
-  data: {},
-});
+const userInfo: infoObject = reactive({ data: {} });
 
 onMounted(() => {
   getLoginStatus();
@@ -42,23 +46,31 @@ const getLoginStatus = () => {
 };
 const handleLogout = () => {
   userService.logOut().then((res) => {
-    ElMessage("退出登录成功");
-    console.log(res);
+    status.value = false;
+    ElMessage.success("退出登录成功");
+    window.location.reload();
   });
 };
 const handleCommand = (command: string) => {
   if (command === "logout") handleLogout();
 };
-
 const errorHandler = () => true;
+const hidePlayer = () => {
+  musicStore.$patch((state) => {
+    state.musicPlayShow = false;
+  });
+};
 </script>
 
 <template>
   <div class="header">
     <div class="icon">
-      <content-menu class="menu">
+      <content-menu class="menu" v-if="!musicStore.musicPlayShow">
         <img src="@/assets/music_logo.png" />
       </content-menu>
+      <div class="down" @click="hidePlayer" v-else>
+        <el-icon><ArrowDown /></el-icon>
+      </div>
     </div>
     <div class="drag">
       <div class="drag-left">
@@ -82,7 +94,7 @@ const errorHandler = () => true;
         <div class="avatar">
           <el-avatar>
             <template #default>
-              <el-icon v-if="!userInfo.data.avatarUrl"><User /></el-icon>
+              <el-icon v-if="!status"><User /></el-icon>
               <el-image v-else :src="userInfo.data.avatarUrl"></el-image>
             </template>
           </el-avatar>
@@ -133,12 +145,19 @@ const errorHandler = () => true;
   width: 100%;
 }
 .icon {
-  padding: 20px;
-  height: 100%;
+  padding: 15px 40px;
+  height: 60px;
+  display: flex;
+  align-items: center;
   text-align: left;
   min-width: 210px;
   max-width: 15vw;
   /* -webkit-app-region: drag; */
+}
+.down {
+  width: 20%;
+  display: flex;
+  align-items: center;
 }
 .drag div {
   display: flex;
@@ -211,14 +230,14 @@ const errorHandler = () => true;
   margin-left: 20px;
   width: 20vw;
 }
-::v-deep(.el-input__inner) {
+.search::v-deep(.el-input__wrapper) {
   height: 30px;
   border-radius: 20px;
 }
-::v-deep(.el-input__prefix) {
+/* .search::v-deep(.el-input__prefix) {
   display: flex;
   align-items: center;
-}
+} */
 .el-button {
   width: 50px;
   border: none;

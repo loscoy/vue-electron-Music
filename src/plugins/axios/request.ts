@@ -20,7 +20,7 @@ const refreshStatus = () => {
 };
 
 const request = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: "/api",
   timeout: 30000,
   withCredentials: true, // 允许跨域设置，不然可能因为拿不到cookie而报错
 });

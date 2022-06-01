@@ -1,3 +1,4 @@
+import { List } from "@element-plus/icons-vue/dist/types";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -38,8 +39,23 @@ const routes = [
         component: () => import("@/views/defaultItem/personalFM.vue"),
       },
       {
-        path: "playlistdetail",
+        path: "/playlistdetail/:id?",
+        name: "playlistdetail",
         component: () => import("@/views/playlistDetail.vue"),
+        // children: [
+        //   {
+        //     path: "musicList",
+        //     component: () => import("@/views/playlistDetail/songList.vue"),
+        //   },
+        //   {
+        //     path: "playlistComment",
+        //     component: () => import("@/views/playlistDetail/playlistComment.vue"),
+        //   },
+        //   {
+        //     path: "collector",
+        //     component: () => import("@/views/playlistDetail/collector.vue"),
+        //   },
+        // ],
       },
     ],
   },
@@ -48,6 +64,9 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes: routes,
+});
+router.beforeEach((to, from, next) => {
+  next();
 });
 
 export default router;

@@ -4,9 +4,14 @@ export const useUserStore = defineStore("user", {
   state() {
     return {
       uid: localStorage.getItem("uid") || "",
+      status: Boolean(localStorage.getItem("status")) || false,
     };
   },
-  actions: {},
+  actions: {
+    switchStatus(status: boolean) {
+      this.status = status;
+    },
+  },
   persist: {
     enabled: true,
     strategies: [
