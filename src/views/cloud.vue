@@ -1,5 +1,5 @@
 <template>
-  <div class="playlistComment">comment</div>
+  <div class="cloud"></div>
 </template>
 
 <script lang="ts" setup></script>

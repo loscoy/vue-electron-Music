@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     Aside: typeof import('./src/components/layout/aside.vue')['default']
     Banner: typeof import('./src/components/discover/recommend/banner.vue')['default']
     CenterContoller: typeof import('./src/components/layout/footer/centerContoller.vue')['default']
+    Collector: typeof import('./src/components/playlistDetail/collector.vue')['default']
     Comment: typeof import('./src/components/player/comment.vue')['default']
     ContentMenu: typeof import('./src/components/contentMenu.vue')['default']
     DetailHeader: typeof import('./src/components/playlistDetail/DetailHeader.vue')['default']
@@ -21,6 +22,7 @@ declare module '@vue/runtime-core' {
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElButtonGroup: typeof import('element-plus/es')['ElButtonGroup']
     ElCard: typeof import("element-plus/es/el-card")["default"];
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
     ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
@@ -47,6 +49,7 @@ declare module '@vue/runtime-core' {
     ElMenu: typeof import("element-plus/es/el-menu")["default"];
     ElMenuItem: typeof import("element-plus/es/el-menu-item")["default"];
     ElOption: typeof import("element-plus/es")["ElOption"];
+    ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
@@ -56,7 +59,10 @@ declare module '@vue/runtime-core' {
     ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
     ElSlider: typeof import('element-plus/es')['ElSlider']
     ElSpace: typeof import('element-plus/es')['ElSpace']
+    ElTable: typeof import('element-plus/es')['ElTable']
+    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTableV2: typeof import('element-plus/es')['ElTableV2']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     Footer: typeof import('./src/components/layout/footer.vue')['default']
     Header: typeof import('./src/components/layout/header.vue')['default']
     HelloWorld: typeof import("./src/components/HelloWorld.vue")["default"];
@@ -74,6 +80,7 @@ declare module '@vue/runtime-core' {
     PlayerCenter: typeof import('./src/components/player/playerCenter.vue')['default']
     PlayerLeft: typeof import('./src/components/player/playerLeft.vue')['default']
     PlayerRight: typeof import('./src/components/player/playerRight.vue')['default']
+    PlaylistComment: typeof import('./src/components/playlistDetail/playlistComment.vue')['default']
     RankList: typeof import("./src/components/discover/recommend/rankList.vue")["default"];
     RecemmendPlaylist: typeof import('./src/components/discover/recommend/recemmendPlaylist.vue')['default']
     Register: typeof import('./src/components/loginPage/register.vue')['default']

@@ -9,7 +9,7 @@
         <div>专辑</div>
         <div>时间</div>
       </li>
-      <el-skeleton style="width: 100%; transition-duration: 1000ms" :loading="loading" animated>
+      <el-skeleton style="width: 100%" :loading="loading" animated>
         <template #template>
           <div style="display: flex" v-for="i in 20" :key="i">
             <div style="width: 8.5%; padding: 5px 5px; height: 40px">
@@ -116,6 +116,7 @@ const play = (index: number) => {
 
 <style lang="less" scoped>
 .musicList {
+  position: relative;
   ul {
     list-style: none;
     height: 51vh;

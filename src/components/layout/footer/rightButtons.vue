@@ -1,7 +1,11 @@
 <template>
   <div class="rightButtons">
-    <div class="showPlayList" @click="drawer = true">
-      <el-icon><Expand /></el-icon>
+    <div class="showPlayList">
+      <div class="text">
+        <span>标准</span>
+      </div>
+      <el-icon :size="20"><Headset /></el-icon>
+      <el-icon @click="drawer = true" :size="20"><Expand /></el-icon>
     </div>
     <el-drawer v-model="drawer" title="当前播放" size="400px">
       <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
@@ -17,7 +21,13 @@
           </div>
           <div class="musicName" :style="{ color: highLight(index) }">{{ item.name }}</div>
           <div class="artistName" :style="{ color: highLight(index) }">{{ ArtistArr[index] }}</div>
-          <div class="time">{{ new Date(item.dt).getMinutes() + ":" + new Date(item.dt).getSeconds().toString().padEnd(2, "0") }}</div>
+          <div class="time">
+            {{
+              new Date(item.dt).getMinutes() +
+              ":" +
+              new Date(item.dt).getSeconds().toString().padEnd(2, "0")
+            }}
+          </div>
         </li>
       </ul>
     </el-drawer>
@@ -59,12 +69,9 @@ const artistsHandle = () => {
   musicStore.setArtistArr(artistsArr);
 };
 const highLight = (index: number) => {
-  if (index === currentIndex.value) {
-    return "red";
-  } else {
-    return "";
-  }
+  return index === currentIndex.value ? "red" : "";
 };
+
 const changeIndex = (index: number) => {
   musicStore.$patch((state) => {
     state.currentIndex = index;
@@ -85,6 +92,24 @@ const backgroundColor = (index: number) => {
     }
   }
   .showPlayList {
+    display: flex;
+    justify-content: end;
+    & > * {
+      margin-right: 10px;
+    }
+    .text {
+      position: relative;
+      width: 40px;
+      height: 20px;
+      box-shadow: 0 0 5px #ccc;
+      border: 1px soild #ccc;
+      border-radius: 5px;
+    }
+    .el-icon {
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
   ::v-deep(.el-drawer__body) {
     padding: 0;

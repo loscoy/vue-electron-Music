@@ -40,22 +40,7 @@ const routes = [
       },
       {
         path: "/playlistdetail/:id?",
-        name: "playlistdetail",
         component: () => import("@/views/playlistDetail.vue"),
-        // children: [
-        //   {
-        //     path: "musicList",
-        //     component: () => import("@/views/playlistDetail/songList.vue"),
-        //   },
-        //   {
-        //     path: "playlistComment",
-        //     component: () => import("@/views/playlistDetail/playlistComment.vue"),
-        //   },
-        //   {
-        //     path: "collector",
-        //     component: () => import("@/views/playlistDetail/collector.vue"),
-        //   },
-        // ],
       },
     ],
   },

@@ -72,7 +72,7 @@ const removeListen = () => {
 const _timeUpdate = () => {
   if (musicStore.lineNo === lrcObj.data.lines.length) return; //当前行数与歌词数组长度相同时结束
   if (musicStore.currentTime !== 0) {
-    if (lrcObj.data.lines[musicStore.lineNo].time <= musicStore.currentTime * 1000) {
+    if (lrcObj.data.lines[musicStore.lineNo].time < musicStore.currentTime * 1000) {
       lineHigh(musicStore.lineNo); //歌词中的时间小于当前播放时间，高亮当前行
       musicStore.$patch((state) => {
         state.lineNo += 1;
@@ -129,18 +129,18 @@ const playThis = (index: number) => {
 };
 </script>
 <style lang="less" scoped>
-.lineHigh {
-  color: #ff0000;
-  font-size: 2rem;
-}
 .lyric {
   .content {
     list-style: none;
     padding-left: 0;
     padding-bottom: 120px;
     .txt {
+      font-size: 1.2rem;
+      transition: color 300ms;
+    }
+    .lineHigh {
+      color: #ff0000;
       font-size: 1.5rem;
-      transition-duration: 1000ms;
     }
   }
 }

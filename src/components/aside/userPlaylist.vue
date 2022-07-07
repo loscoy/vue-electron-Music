@@ -2,12 +2,22 @@
   <div class="userPlaylist">
     <el-collapse class="collapse" v-model="activeNames">
       <el-collapse-item class="collapse_item" title="创建的歌单" name="1">
-        <router-link :to="'/playlistdetail/' + item.id" exact v-for="item in createdPlaylist.data" :key="item">
+        <router-link
+          :to="'/playlistdetail/' + item.id"
+          exact
+          v-for="item in createdPlaylist.data"
+          :key="item"
+        >
           <div class="playlistName" @click="setPlaylistId(item.id)">{{ item.name }}</div>
         </router-link>
       </el-collapse-item>
       <el-collapse-item class="collapse_item" title="收藏的歌单" name="2">
-        <router-link :to="'/playlistdetail/' + item.id" exact v-for="item in collectPlaylist.data" :key="item">
+        <router-link
+          :to="'/playlistdetail/' + item.id"
+          exact
+          v-for="item in collectPlaylist.data"
+          :key="item"
+        >
           <div class="playlistName" @click="setPlaylistId(item.id)">{{ item.name }}</div>
         </router-link>
       </el-collapse-item>
@@ -74,7 +84,8 @@ const setPlaylistId = (id: number) => {
         }
       }
     }
-    .router-link-active div {
+    .router-link-active .playlistName {
+      padding-right: 10px;
       .a_active();
       &:hover {
         .a_hover();
@@ -83,12 +94,6 @@ const setPlaylistId = (id: number) => {
         .a_active_after();
       }
     }
-  }
-  span {
-    font-size: 0.85rem;
-    padding-left: 10px;
-    padding-bottom: 20px;
-    color: #999;
   }
 }
 </style>
